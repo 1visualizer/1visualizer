@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <nav class="navbar navbar-expand-md navbar-dark sticky-top bg-dark">
+  <nav class="navbar navbar-expand-md navbar-dark sticky-top bg-primary">
     <div class="container-fluid">
       <a
         href="/"

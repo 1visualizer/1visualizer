@@ -12,6 +12,11 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
   integrity sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==
 
+"@types/prismjs@^1.26.0":
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/@types/prismjs/-/prismjs-1.26.0.tgz#a1c3809b0ad61c62cac6d4e0c56d610c910b7654"
+  integrity sha512-ZTaqn/qSqUuAq1YwvOFQfVW1AR/oQJlLSZVustdjwI+GZ8kr0MSHBj0tsXPW1EqHubx50gtBEjbPGsdZwQwCjQ==
+
 "@vitejs/plugin-vue@^2.3.1":
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.3.1.tgz#5f286b8d3515381c6d5c8fa8eee5e6335f727e14"
@@ -337,6 +342,11 @@ postcss@^8.1.10, postcss@^8.4.12:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
+prismjs@^1.28.0:
+  version "1.28.0"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.28.0.tgz#0d8f561fa0f7cf6ebca901747828b149147044b6"
+  integrity sha512-8aaXdYvl1F7iC7Xm1spqSaY/OJBpYW3v+KJ+F17iYxvdc8sfjW194COK5wVhMZX45tGteiBQgdvD/nhxcRwylw==
+
 resolve@^1.22.0:
   version "1.22.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.22.0.tgz#5e0b8c67c15df57a89bdbabe603a002f21731198"
@@ -389,6 +399,16 @@ vite@^2.9.5:
     rollup "^2.59.0"
   optionalDependencies:
     fsevents "~2.3.2"
+
+vue-prism-component@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/vue-prism-component/-/vue-prism-component-2.0.0.tgz#eec89c5fe1ea3d8b55b8721d823b29d8b73b2b6d"
+  integrity sha512-1ofrL+GCZOv4HqtX5W3EgkhSAgadSeuD8FDTXbwhLy8kS+28RCR8t2S5VTeM9U/peAaXLBpSgRt3J25ao8KTeg==
+
+vue-prism-editor@^2.0.0-alpha.2:
+  version "2.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/vue-prism-editor/-/vue-prism-editor-2.0.0-alpha.2.tgz#aa53a88efaaed628027cbb282c2b1d37fc7c5c69"
+  integrity sha512-Gu42ba9nosrE+gJpnAEuEkDMqG9zSUysIR8SdXUw8MQKDjBnnNR9lHC18uOr/ICz7yrA/5c7jHJr9lpElODC7w==
 
 vue-tsc@^0.34.7:
   version "0.34.10"
