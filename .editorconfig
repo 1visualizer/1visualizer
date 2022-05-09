@@ -4,4 +4,4 @@ root = true
 
 # 4 space indentation
 [*]
-max_line_length = 150
+max_line_length = 198

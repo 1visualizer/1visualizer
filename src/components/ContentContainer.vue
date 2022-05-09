@@ -10,4 +10,8 @@ import MainContent from "./MainContent.vue";
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+.fluid-container {
+  height: 93vh;
+}
+</style>
