@@ -1,5 +1,5 @@
 import { HierarchyResult } from "../entities/HierarchyResult";
-
+import { XMLValidator } from "fast-xml-parser";
 export function parse(document: string): Node {
   const parser = new DOMParser();
   const doc1 = parser.parseFromString(document, "application/xml");
@@ -30,4 +30,11 @@ function iterateAndPush(element: Element, result: HierarchyResult) {
     let newNode = constructHierarchy(child as Element, result);
     if (!newNode.id.includes("sequence")) result.children.push(newNode);
   }
+}
+
+export function validateXml(document: string) {
+  const result = XMLValidator.validate(document, {
+    allowBooleanAttributes: true,
+  });
+  return result;
 }

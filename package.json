@@ -14,6 +14,7 @@
     "@types/go": "^1.6.22",
     "@types/prismjs": "^1.26.0",
     "bootstrap": "^5.1.3",
+    "fast-xml-parser": "^4.0.7",
     "insert-css": "^2.0.0",
     "prismjs": "^1.28.0",
     "vue": "^3.2.25",
