@@ -10,19 +10,23 @@ export default {
   components: {
     PrismEditor,
   },
+  emits: ["code-change"],
   props: {
-    data: String,
+    code: String,
   },
   methods: {
     highlighter(code) {
       return highlight(code, languages.js); // languages.<insert language> to return html with markup
+    },
+    onCodeChange() {
+      this.$emit("code-change", this.code);
     },
   },
 };
 </script>
 <template>
   <div class="tab-pane fade show active codearea pt-5 ps-5 pe-5" id="pills-code" role="tabpanel" aria-labelledby="pills-code-tab">
-    <prism-editor class="my-editor" v-model="data" :highlight="highlighter" line-numbers></prism-editor>
+    <prism-editor class="my-editor" v-model="code" :highlight="highlighter" @input="onCodeChange" line-numbers></prism-editor>
   </div>
 </template>
 

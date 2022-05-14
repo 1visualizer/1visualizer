@@ -3,11 +3,24 @@ import DesignContent from "./DesignContent.vue";
 import CodeContent from "./CodeContent.vue";
 </script>
 
-<script lang="ts"></script>
+<script lang="ts">
+export default {
+  data() {
+    return {
+      code: "",
+    };
+  },
+  methods: {
+    updateCode(code: string) {
+      this.code = code;
+    },
+  },
+};
+</script>
 <template>
   <div class="tab-content workarea" id="pills-tabContent">
-    <CodeContent />
-    <DesignContent />
+    <CodeContent :code="code" @code-change="updateCode" />
+    <DesignContent :code="code" />
   </div>
 </template>
 
