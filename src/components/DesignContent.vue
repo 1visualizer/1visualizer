@@ -5,7 +5,6 @@ import { HierarchyResult } from "../entities/HierarchyResult";
 import Hierarchy from "@antv/hierarchy";
 import { TreeEdge } from "../entities/TreeEdge";
 import { TreeNode } from "../entities/TreeNode";
-import { validateXml } from "../common/xmlparser";
 
 export default {
   mounted() {
@@ -140,8 +139,9 @@ export default {
   },
   watch: {
     code(newCode) {
-      this.graph.clearCells();
-      if (validateXml(newCode!) == true) {
+      if (newCode == "") {
+        this.graph.clearCells();
+      } else {
         const requestOptions = {
           method: "POST",
           headers: { "Content-Type": "application/xml" },
@@ -258,6 +258,9 @@ export default {
     },
     getGraph(): Graph {
       return this.graph;
+    },
+    clearGraph() {
+      this.graph.clearCells();
     },
   },
 };

@@ -5,6 +5,11 @@ import CodeContent from "./CodeContent.vue";
 
 <script lang="ts">
 export default {
+  name: "MainContent",
+  components: {
+    CodeContent,
+    DesignContent,
+  },
   data() {
     return {
       code: "",
@@ -19,7 +24,7 @@ export default {
 </script>
 <template>
   <div class="tab-content workarea" id="pills-tabContent">
-    <CodeContent :code="code" @code-change="updateCode" />
+    <CodeContent @code-change="updateCode" />
     <DesignContent :code="code" />
   </div>
 </template>

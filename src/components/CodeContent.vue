@@ -2,6 +2,7 @@
 
 <script lang="ts">
 import { PrismEditor } from "vue-prism-editor";
+import { validateXml } from "../common/xmlparser";
 
 // import highlighting library (you can use any library you want just return html string)
 import { highlight, languages } from "prismjs/components/prism-core";
@@ -10,7 +11,7 @@ export default {
   components: {
     PrismEditor,
   },
-  emits: ["code-change"],
+  emits: ["code-change", "clear-graph"],
   props: {
     code: String,
   },
@@ -19,7 +20,11 @@ export default {
       return highlight(code, languages.js); // languages.<insert language> to return html with markup
     },
     onCodeChange() {
-      this.$emit("code-change", this.code);
+      if (validateXml(this.code!) == true) {
+        this.$emit("code-change", this.code);
+      } else {
+        this.$emit("code-change", "");
+      }
     },
   },
 };
