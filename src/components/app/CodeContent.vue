@@ -1,42 +1,40 @@
 <script setup lang="ts">
 import { PrismEditor } from "vue-prism-editor";
-import { validateXml } from "../common/xmlparser";
+import { validateXml } from "../../common/xmlparser";
 import { highlight, languages } from "prismjs/components/prism-core";
-import * as bootstrap from "bootstrap";
-
-const props = defineProps({ code: String });
+import { reactive } from "vue";
+import toast, { push } from "../utils/Toast.vue";
+import * as _ from "lodash";
 const emit = defineEmits(["code-change", "clear-graph"]);
+const props = defineProps({
+  code: String,
+});
+
+const state = reactive({ errors: [] });
 
 function highlighter(code) {
   return highlight(code, languages.js); // languages.<insert language> to return html with markup
 }
 
-function onCodeChange() {
-  let result;
-  if ((result = validateXml(props.code!)) == true) {
+const codeChange = _.debounce(function () {
+  const result = validateXml(props.code!);
+  if (props.code?.trim().length != 0 && result == true) {
     emit("code-change", props.code);
-  } else {
+  } else if (props.code?.trim().length != 0) {
     emit("code-change", "");
-    var liveToast = document.getElementById("liveToast");
-    var errorBody = document.getElementById("error-body");
-    //errorBody.innerText  = "dddd";
-    var toast = new bootstrap.Toast(liveToast);
-    toast.show();
+    push(state.errors, { id: _.uniqueId("toast_"), msg: "Invalid document : " + result.err.msg });
   }
+}, 2000);
+
+function onCodeChange() {
+  codeChange();
 }
 </script>
 
 <template>
   <div class="tab-pane fade show active codearea pt-5 ps-5 pe-5" id="pills-code" role="tabpanel" aria-labelledby="pills-code-tab">
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-      <div id="liveToast" class="toast fade opacity-75 bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-danger">
-          <strong class="me-auto text-white">Error</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body text-white error-body">Hello, world! This is a toast message.</div>
-      </div>
-    </div>
+    <toast :errors="state.errors" :msg="code"></toast>
+
     <prism-editor class="my-editor" v-model="code" :highlight="highlighter" @input="onCodeChange" line-numbers></prism-editor>
   </div>
 </template>

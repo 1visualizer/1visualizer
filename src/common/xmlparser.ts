@@ -15,9 +15,30 @@ export function constructHierarchy(element: Element, lastResult: HierarchyResult
 
   let result = {} as HierarchyResult;
   result.id = element.getAttribute("name") ?? element.nodeName;
+  result.minOccurs = element.getAttribute("minOccurs") ?? "1";
+  result.maxOccurs = element.getAttribute("maxOccurs") == "unbounded" ? "*" : element.getAttribute("maxOccurs") ?? "1";
+  const type = element.getAttribute("type");
+
+  if (type?.includes("string")) {
+    result.type = "string";
+  } else if (type?.includes("integer") || type?.includes("decimal") || type?.includes("unsigned") || type?.includes("long")) {
+    result.type = "number";
+  } else if (type?.includes("boolean")) {
+    result.type = "boolean";
+  } else if (type?.includes("date")) {
+    result.type = "date";
+  } else if (type?.includes("time")) {
+    result.type = "time";
+  } else {
+    console.log(type);
+    result.type = "complextypexml";
+  }
   result.children = [];
   if (element.hasChildNodes() && !element.nodeName.includes("sequence")) {
     if (element.childElementCount == 1 && element.firstChild?.nodeName.includes("complexType")) {
+      element = element.firstChild as Element;
+    }
+    if (element.childElementCount == 1 && element.firstChild?.nodeName.includes("simpleContent")) {
       element = element.firstChild as Element;
     }
     iterateAndPush(element, result);
@@ -27,8 +48,14 @@ export function constructHierarchy(element: Element, lastResult: HierarchyResult
 
 function iterateAndPush(element: Element, result: HierarchyResult) {
   for (var child = element.firstChild; child; child = child.nextSibling) {
+    if (child.nodeName.includes("attribute")) {
+      console.log(child.nodeName);
+      continue;
+    }
     let newNode = constructHierarchy(child as Element, result);
-    if (!newNode.id.includes("sequence")) result.children.push(newNode);
+    if (!newNode.id.includes("sequence")) {
+      result.children.push(newNode);
+    }
   }
 }
 
