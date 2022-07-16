@@ -5,17 +5,22 @@ import SideBar from "../common/SideBar.vue";
 import { ref } from "vue";
 
 const mycode = ref("");
+const mydate = ref();
 function updateCode(code: string) {
   mycode.value = code;
+}
+
+function updateDate(date: Date) {
+  mydate.value = date;
 }
 </script>
 
 <template>
   <main class="fluid-container">
-    <SideBar />
+    <SideBar :date="mydate" />
     <div class="tab-content workarea" id="pills-tabContent">
       <CodeContent @code-change="updateCode" />
-      <DesignContent :code="mycode" />
+      <DesignContent @graph-rendred="updateDate" :code="mycode" />
     </div>
   </main>
 </template>

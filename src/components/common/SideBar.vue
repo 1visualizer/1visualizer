@@ -1,4 +1,22 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { Graph } from "@antv/x6";
+import { watch } from "vue";
+
+const props = defineProps({
+  date: Number,
+});
+watch(
+  () => props.date,
+  async (newDate, oldDate) => {
+    const designLi = document.getElementById("design");
+    const originalBackground = designLi!.style.backgroundColor;
+    designLi!.style.backgroundColor = "orange";
+    setTimeout(() => {
+      designLi!.style.backgroundColor = originalBackground;
+    }, 100);
+  }
+);
+</script>
 
 <template>
   <div class="d-flex flex-column pt-5 flex-shrink-0 sidebar">
@@ -22,7 +40,7 @@
           Code
         </a>
       </li>
-      <li class="nav-item" role="presentation">
+      <li id="design" class="nav-item" role="presentation">
         <a
           class="nav-link py-3 border-bottom"
           id="pills-design-tab"
