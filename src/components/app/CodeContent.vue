@@ -4,6 +4,7 @@ import { validateXml } from "../../common/xmlparser";
 import { highlight, languages } from "prismjs/components/prism-core";
 import { reactive } from "vue";
 import toast, { push } from "../utils/Toast.vue";
+import { onMounted } from "vue";
 import * as _ from "lodash";
 const emit = defineEmits(["code-change", "clear-graph"]);
 const props = defineProps({

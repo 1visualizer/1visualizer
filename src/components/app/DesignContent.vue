@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { Graph, Node, Model, Edge } from "@antv/x6";
 import { parse, constructHierarchy } from "../../common/xmlparser";
+import { parseRoot } from "../../common/xsd/parser";
+import * as _ from "lodash";
+
 import { HierarchyResult } from "../../entities/HierarchyResult";
 import Hierarchy from "@antv/hierarchy";
 import { TreeEdge } from "../../entities/TreeEdge";
 import { TreeNode } from "../../entities/TreeNode";
 import { onMounted, ref, watch } from "vue";
+
+const emit = defineEmits(["graph-rendred"]);
 
 const props = defineProps({
   code: String,
@@ -16,15 +21,240 @@ let mygraph: Graph;
 function clearGraph() {
   mygraph.clearCells();
 }
+function renderGraph(code) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/xml" },
+    body: code,
+  };
+  //  fetch("http://localhost:7071/api/xml2xsd", requestOptions)
+  fetch("https://xml-2-xsd.azurewebsites.net/api/xml2xsd", requestOptions)
+    .then((response) => response.text())
+    .then((xml) => {
+      let ob = constructHierarchy(parse(xml) as Element, null);
+
+      let ob2 = parseRoot(parse(xml) as Element);
+
+      const result = Hierarchy.mindmap(ob2, {
+        direction: "H",
+        getHeight() {
+          return 16;
+        },
+        getWidth() {
+          return 16;
+        },
+        getHGap(node: HierarchyResult) {
+          if (node.type == "sequence") return 110;
+          else return 170;
+        },
+        getVGap() {
+          return 35;
+        },
+        getSide: () => {
+          return "right";
+        },
+      });
+      const model: Model.FromJSONData = { nodes: [], edges: [] };
+      const traverse = (data: any, isRoot: boolean) => {
+        if (data) {
+          if (isRoot) {
+            model.nodes?.push({
+              id: `${data.id}`,
+              x: data.x + 400,
+              y: data.y + 250,
+              width: 200,
+              height: 60,
+              attrs: {
+                body: {
+                  stroke: "#5F95FF",
+                  strokeWidth: 1,
+                  fill: "rgba(95,149,255,0.05)",
+                  refWidth: 1,
+                  refHeight: 1,
+                },
+                image: {
+                  "xlink:href": "../../src/assets/complextypexml.svg",
+                  width: 20,
+                  height: 20,
+                  x: 12,
+                  y: 12,
+                },
+                title: {
+                  text: data.data.name,
+                  refX: 40,
+                  refY: 14,
+                  fill: "rgba(0,0,0,0.85)",
+                  fontSize: 12,
+                  "text-anchor": "start",
+                },
+              },
+              markup: [
+                {
+                  tagName: "rect",
+                  selector: "body",
+                },
+                {
+                  tagName: "image",
+                  selector: "image",
+                },
+                {
+                  tagName: "text",
+                  selector: "title",
+                },
+                {
+                  tagName: "text",
+                  selector: "text",
+                },
+              ],
+            });
+          } else {
+            if (data.data.type != "sequence") {
+              model.nodes?.push({
+                id: `${data.id}`,
+                x: data.x + 400,
+                y: data.y + 250,
+                width: 200,
+                height: 60,
+                attrs: {
+                  body: {
+                    stroke: "#5F95FF",
+                    strokeWidth: 1,
+                    fill: "rgba(95,149,255,0.05)",
+                    refWidth: 1,
+                    refHeight: 1,
+                  },
+                  image: {
+                    "xlink:href": "./src/assets/" + data.data.type + ".svg",
+                    width: 20,
+                    height: 20,
+                    x: 12,
+                    y: 12,
+                  },
+                  title: {
+                    text: data.data.name,
+                    refX: 40,
+                    refY: 14,
+                    fill: "rgba(0,0,0,0.85)",
+                    fontSize: 12,
+                    "text-anchor": "start",
+                  },
+                },
+                markup: [
+                  {
+                    tagName: "rect",
+                    selector: "body",
+                  },
+                  {
+                    tagName: "image",
+                    selector: "image",
+                  },
+                  {
+                    tagName: "text",
+                    selector: "title",
+                  },
+                  {
+                    tagName: "text",
+                    selector: "text",
+                  },
+                ],
+                ports: {
+                  groups: {
+                    group1: {
+                      attrs: {
+                        circle: {
+                          r: 4,
+                          magnet: true,
+                          stroke: "#31d0c6",
+                          fill: "#fff",
+                          strokeWidth: 1,
+                        },
+                      },
+                    },
+                  },
+                  items: [
+                    {
+                      id: "port1",
+                      group: "group1",
+                      attrs: {
+                        text: {
+                          text: data.data.minOccurs + "..." + data.data.maxOccurs,
+                        },
+                      },
+                    },
+                  ],
+                },
+              });
+            } else {
+              model.nodes?.push({
+                id: `${data.id}`,
+                shape: "image",
+                x: data.x + 400,
+                y: data.y + 265,
+                width: 40,
+                height: 30,
+                imageUrl: data.data.icon,
+                ports: {
+                  groups: {
+                    group1: {
+                      attrs: {
+                        circle: {
+                          r: 1,
+                          magnet: true,
+                          strokeWidth: 0.5,
+                        },
+                      },
+                    },
+                  },
+                  items: [
+                    {
+                      id: "port1",
+                      group: "group1",
+                      attrs: {
+                        text: {
+                          text: data.data.minOccurs + "..." + data.data.maxOccurs,
+                        },
+                      },
+                    },
+                  ],
+                },
+              });
+            }
+          }
+        }
+        if (data.children) {
+          data.children.forEach((item: HierarchyResult) => {
+            model.edges?.push({
+              source: `${data.id}`,
+              target: `${item.id}`,
+              attrs: {
+                line: {
+                  stroke: "#A2B1C3",
+                  strokeWidth: 1,
+                  targetMarker: null,
+                },
+              },
+            });
+            traverse(item, false);
+          });
+        }
+      };
+      traverse(result, true);
+      mygraph.fromJSON(model);
+      emit("graph-rendred", Date.now());
+    });
+}
 function downloadSVGAsText() {
-  mygraph.toSVG(function tester(data) {
-    const base64doc = btoa(unescape(encodeURIComponent(data)));
-    const e = new MouseEvent("click");
-    const a = document.createElement("a");
-    a.download = "download.svg";
-    a.href = "data:image/svg+xml;base64," + base64doc;
-    a.dispatchEvent(e);
-  });
+  mygraph.toSVG(
+    function tester(data) {
+      const base64doc = btoa(unescape(encodeURIComponent(data)));
+      const e = new MouseEvent("click");
+      const a = document.createElement("a");
+      a.download = "download.svg";
+      a.href = "data:image/svg+xml;base64," + base64doc;
+      a.dispatchEvent(e);
+    },
+    { serializeImages: true }
+  );
 }
 function downloadSVGAsPNG() {
   mygraph.toPNG(function tester(data) {
@@ -113,6 +343,14 @@ onMounted(function () {
     frozen: false,
     interacting: true,
     sorting: "approx",
+    selecting: {
+      enabled: true,
+      multiple: true,
+      rubberband: true,
+      movable: true,
+      showNodeSelectionBox: true,
+      modifiers: "alt",
+    },
     panning: {
       enabled: true,
     },
@@ -154,197 +392,20 @@ onMounted(function () {
   });
 
   Node.registry.register("tree-node", TreeNode, true);
-  Edge.registry.register("tree-edge", TreeEdge, true);
+  Edge.registry.register("lane-edge", TreeEdge, true);
+  if (!_.isEmpty(props.code)) {
+    clearGraph();
+    renderGraph(props.code);
+  }
 });
 
 watch(
   () => props.code,
   async (newCode, oldCode) => {
     if (newCode == "") {
-      mygraph.clearCells();
+      clearGraph();
     } else {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/xml" },
-        body: newCode,
-      };
-      fetch("http://localhost:7071/api/xml2xsd", requestOptions)
-        .then((response) => response.text())
-        .then((xml) => {
-          const parser = new DOMParser();
-          const doc1 = parser.parseFromString(xml, "application/xml");
-          const ns = doc1.createNSResolver(doc1.documentElement);
-          const res = doc1.evaluate("/xs:schema/xs:element", doc1.documentElement, ns, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-          let ob = constructHierarchy(parse(xml) as Element, null);
-          const result = Hierarchy.mindmap(ob, {
-            direction: "H",
-            getHeight() {
-              return 16;
-            },
-            getWidth() {
-              return 16;
-            },
-            getHGap() {
-              return 180;
-            },
-            getVGap() {
-              return 35;
-            },
-            getSide: () => {
-              return "right";
-            },
-          });
-          const model: Model.FromJSONData = { nodes: [], edges: [] };
-          const traverse = (data: any, isRoot: Boolean) => {
-            if (data) {
-              if (isRoot) {
-                model.nodes?.push({
-                  id: `${data.id}`,
-                  x: data.x + 400,
-                  y: data.y + 250,
-                  width: 200,
-                  height: 60,
-                  attrs: {
-                    body: {
-                      stroke: "#5F95FF",
-                      strokeWidth: 1,
-                      fill: "rgba(95,149,255,0.05)",
-                      refWidth: 1,
-                      refHeight: 1,
-                    },
-                    image: {
-                      "xlink:href": "./src/assets/" + data.data.type + ".png",
-                      width: 20,
-                      height: 20,
-                      x: 12,
-                      y: 12,
-                    },
-                    title: {
-                      text: data.id,
-                      refX: 40,
-                      refY: 14,
-                      fill: "rgba(0,0,0,0.85)",
-                      fontSize: 12,
-                      "text-anchor": "start",
-                    },
-                  },
-                  markup: [
-                    {
-                      tagName: "rect",
-                      selector: "body",
-                    },
-                    {
-                      tagName: "image",
-                      selector: "image",
-                    },
-                    {
-                      tagName: "text",
-                      selector: "title",
-                    },
-                    {
-                      tagName: "text",
-                      selector: "text",
-                    },
-                  ],
-                });
-              } else {
-                model.nodes?.push({
-                  id: `${data.id}`,
-                  x: data.x + 400,
-                  y: data.y + 250,
-                  width: 200,
-                  height: 60,
-                  attrs: {
-                    body: {
-                      stroke: "#5F95FF",
-                      strokeWidth: 1,
-                      fill: "rgba(95,149,255,0.05)",
-                      refWidth: 1,
-                      refHeight: 1,
-                    },
-                    image: {
-                      "xlink:href": "./src/assets/" + data.data.type + ".png",
-                      width: 20,
-                      height: 20,
-                      x: 12,
-                      y: 12,
-                    },
-                    title: {
-                      text: data.id,
-                      refX: 40,
-                      refY: 14,
-                      fill: "rgba(0,0,0,0.85)",
-                      fontSize: 12,
-                      "text-anchor": "start",
-                    },
-                  },
-                  markup: [
-                    {
-                      tagName: "rect",
-                      selector: "body",
-                    },
-                    {
-                      tagName: "image",
-                      selector: "image",
-                    },
-                    {
-                      tagName: "text",
-                      selector: "title",
-                    },
-                    {
-                      tagName: "text",
-                      selector: "text",
-                    },
-                  ],
-                  ports: {
-                    groups: {
-                      group1: {
-                        attrs: {
-                          circle: {
-                            r: 4,
-                            magnet: true,
-                            stroke: "#31d0c6",
-                            fill: "#fff",
-                            strokeWidth: 1,
-                          },
-                        },
-                      },
-                    },
-                    items: [
-                      {
-                        id: "port1",
-                        group: "group1",
-                        attrs: {
-                          text: {
-                            text: data.data.minOccurs + "..." + data.data.maxOccurs,
-                          },
-                        },
-                      },
-                    ],
-                  },
-                });
-              }
-            }
-            if (data.children) {
-              data.children.forEach((item: HierarchyResult) => {
-                model.edges?.push({
-                  source: `${data.id}`,
-                  target: `${item.id}`,
-                  attrs: {
-                    line: {
-                      stroke: "#A2B1C3",
-                      strokeWidth: 1,
-                      targetMarker: null,
-                    },
-                  },
-                });
-                traverse(item, false);
-              });
-            }
-          };
-          traverse(result, true);
-          mygraph.fromJSON(model);
-        });
+      renderGraph(newCode);
     }
   }
 );
@@ -369,16 +430,12 @@ watch(
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a v-on:click="downloadSVGAsText()">
-                  <svg class="bi" width="24" height="24" role="img" aria-label="Code">
-                    <use xlink:href="#svg" />
-                  </svg>
+                  <img src="src/assets/svg.svg" style="width: 25px; height: 25px" alt="Download diagram as svg" />
                 </a>
               </li>
               <li class="nav-item">
                 <a v-on:click="downloadSVGAsPNG()">
-                  <svg class="bi" width="24" height="24" role="img" aria-label="Code">
-                    <use xlink:href="#png" />
-                  </svg>
+                  <img src="src/assets/png.svg" style="width: 25px; height: 25px" alt="Download diagram as png" />
                 </a>
               </li>
             </ul>
