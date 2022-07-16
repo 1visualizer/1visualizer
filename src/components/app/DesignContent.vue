@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Graph, Node, Model, Edge } from "@antv/x6";
-import { parse, constructHierarchy } from "../../common/xmlparser";
-import { parseRoot } from "../../common/xsd/parser";
+import { parseRoot, parse } from "../../common/xsd/parser";
 import * as _ from "lodash";
 
 import { HierarchyResult } from "../../entities/HierarchyResult";
@@ -31,8 +30,6 @@ function renderGraph(code) {
   fetch("https://xml-2-xsd.azurewebsites.net/api/xml2xsd", requestOptions)
     .then((response) => response.text())
     .then((xml) => {
-      let ob = constructHierarchy(parse(xml) as Element, null);
-
       let ob2 = parseRoot(parse(xml) as Element);
 
       const result = Hierarchy.mindmap(ob2, {
@@ -430,12 +427,12 @@ watch(
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a v-on:click="downloadSVGAsText()">
-                  <img src="src/assets/svg.svg" style="width: 25px; height: 25px" alt="Download diagram as svg" />
+                  <img src="../../assets/svg.svg" style="width: 25px; height: 25px" alt="Download diagram as svg" />
                 </a>
               </li>
               <li class="nav-item">
                 <a v-on:click="downloadSVGAsPNG()">
-                  <img src="src/assets/png.svg" style="width: 25px; height: 25px" alt="Download diagram as png" />
+                  <img src="../../assets/png.svg" style="width: 25px; height: 25px" alt="Download diagram as png" />
                 </a>
               </li>
             </ul>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PrismEditor } from "vue-prism-editor";
-import { validateXml } from "../../common/xmlparser";
+import { validateXml } from "../../common/xsd/parser";
 import { highlight, languages } from "prismjs/components/prism-core";
 import { reactive } from "vue";
 import toast, { push } from "../utils/Toast.vue";
@@ -18,7 +18,7 @@ function highlighter(code) {
 }
 
 const codeChange = _.debounce(function () {
-  const result = validateXml(props.code!);
+  const result: any = validateXml(props.code!);
   if (props.code?.trim().length != 0 && result == true) {
     emit("code-change", props.code);
   } else if (props.code?.trim().length != 0) {

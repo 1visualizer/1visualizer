@@ -1,5 +1,6 @@
 import { HierarchyResult } from "../../entities/HierarchyResult";
 import { XMLValidator } from "fast-xml-parser";
+
 import * as _ from "lodash";
 
 export function parse(document: string): Node {
@@ -114,4 +115,12 @@ function getTypeByAttribute(type: string): string {
   } else {
     return "complextypexml";
   }
+}
+
+
+export function validateXml(document: string) {
+  const result = XMLValidator.validate(document, {
+    allowBooleanAttributes: true,
+  });
+  return result;
 }
