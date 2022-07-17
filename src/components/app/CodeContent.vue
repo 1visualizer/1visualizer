@@ -4,24 +4,20 @@ import { validateXml } from "../../common/xsd/parser";
 import { highlight, languages } from "prismjs/components/prism-core";
 import { reactive } from "vue";
 import toast, { push } from "../utils/Toast.vue";
-import { onMounted } from "vue";
 import * as _ from "lodash";
 const emit = defineEmits(["code-change", "clear-graph"]);
-const props = defineProps({
-  code: String,
-});
 
-const state = reactive({ errors: [] });
+const state = reactive({ errors: [], code: "" });
 
 function highlighter(code) {
   return highlight(code, languages.js); // languages.<insert language> to return html with markup
 }
 
 const codeChange = _.debounce(function () {
-  const result: any = validateXml(props.code!);
-  if (props.code?.trim().length != 0 && result == true) {
-    emit("code-change", props.code);
-  } else if (props.code?.trim().length != 0) {
+  const result: any = validateXml(state.code);
+  if (state.code.trim().length != 0 && result == true) {
+    emit("code-change", state.code);
+  } else if (state.code.trim().length != 0) {
     emit("code-change", "");
     push(state.errors, { id: _.uniqueId("toast_"), msg: "Invalid document : " + result.err.msg });
   }
@@ -34,9 +30,9 @@ function onCodeChange() {
 
 <template>
   <div class="tab-pane fade show active codearea pt-5 ps-5 pe-5" id="pills-code" role="tabpanel" aria-labelledby="pills-code-tab">
-    <toast :errors="state.errors" :msg="code"></toast>
+    <toast :errors="state.errors" :msg="state.code"></toast>
 
-    <prism-editor class="my-editor" v-model="code" :highlight="highlighter" @input="onCodeChange" line-numbers></prism-editor>
+    <prism-editor class="my-editor" v-model="state.code" :highlight="highlighter" @input="onCodeChange" line-numbers></prism-editor>
   </div>
 </template>
 
