@@ -26,12 +26,10 @@ function renderGraph(code) {
     headers: { "Content-Type": "application/xml" },
     body: code,
   };
-  //  fetch("http://localhost:7071/api/xml2xsd", requestOptions)
-  fetch("https://xml-2-xsd.azurewebsites.net/api/xml2xsd", requestOptions)
+  fetch(import.meta.env.VITE_XML2XSD_API_URL, requestOptions)
     .then((response) => response.text())
     .then((xml) => {
       let ob2 = parseRoot(parse(xml) as Element);
-
       const result = Hierarchy.mindmap(ob2, {
         direction: "H",
         getHeight() {
