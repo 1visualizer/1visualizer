@@ -16,9 +16,10 @@ jobs:
     name: Build and Deploy Job
     steps:
       - uses: actions/checkout@v2
-      - uses: microsoft/variable-substitution@v1
         with:
           submodules: true
+      - uses: microsoft/variable-substitution@v1
+        with:
           files: '.dev.production'
         env:
             VITE_XML2XSD_API_URL: ${{ secrets.VITE_XML2XSD_API_URL }}
