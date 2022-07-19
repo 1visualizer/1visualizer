@@ -22,6 +22,7 @@ jobs:
       - uses: franzbischoff/replace_envs@v1
         env:
           VITE_XML2XSD_API_URL: ${{ secrets.VITE_XML2XSD_API_URL }}
+          VITE_XML2XSD_API_URL222: ${{ env.VITE_XML2XSD_API_URL }}
         with:
           from_file: '.env.production'
           to_file: '.env.production'
