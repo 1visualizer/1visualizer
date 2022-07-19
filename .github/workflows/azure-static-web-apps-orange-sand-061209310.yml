@@ -25,7 +25,7 @@ jobs:
         run: cat /home/runner/work/1visualizer/1visualizer/.dev.production
       - uses: cschleiden/replace-tokens@v1
         with:
-          files: '*.production'
+          files: '**/*.production'
         env:
           VITE_XML2XSD_API_URL: vALUE_text
       - name: Test output
