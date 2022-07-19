@@ -22,18 +22,18 @@ jobs:
       - name: Test output
         run: ls /home/runner/work/1visualizer/1visualizer
       - name: Test output
-        run: cat /home/runner/work/1visualizer/1visualizer/.dev.production
+        run: cat /home/runner/work/1visualizer/1visualizer/.env.production
       - uses: franzbischoff/replace_envs@v1
         env:
           VITE_XML2XSD_API_URL: totofofo
         with:
-          from_file: '.dev.production'
-          to_file: '.dev.production'
+          from_file: '.env.production'
+          to_file: '.env.production'
           commit: 'false'
       - name: Test output
         run: echo toto toto
       - name: Test output
-        run: cat /home/runner/work/1visualizer/1visualizer/.dev.production
+        run: cat /home/runner/work/1visualizer/1visualizer/.env.production
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
