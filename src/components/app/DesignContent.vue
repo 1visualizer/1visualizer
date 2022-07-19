@@ -26,6 +26,7 @@ function renderGraph(code) {
     headers: { "Content-Type": "application/xml" },
     body: code,
   };
+  console.log(import.meta.env.VITE_XML2XSD_API_URL);
   fetch(import.meta.env.VITE_XML2XSD_API_URL, requestOptions)
     .then((response) => response.text())
     .then((xml) => {
