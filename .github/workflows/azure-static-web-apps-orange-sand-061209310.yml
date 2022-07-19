@@ -21,7 +21,7 @@ jobs:
           submodules: true
       - uses: cschleiden/replace-tokens@v1
         with:
-          files: '.dev.production'
+          files: '*.production'
         env:
           VITE_XML2XSD_API_URL: vALUE_text          
       - name: Build And Deploy
