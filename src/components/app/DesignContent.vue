@@ -2,6 +2,8 @@
 import { Graph, Node, Model, Edge } from "@antv/x6";
 import { parseRoot, parse } from "../../common/xsd/parser";
 import * as _ from "lodash";
+import png from "../../assets/png.svg";
+import svg from "../../assets/svg.svg";
 
 import { HierarchyResult } from "../../entities/HierarchyResult";
 import Hierarchy from "@antv/hierarchy";
@@ -69,7 +71,7 @@ function renderGraph(code) {
                   refHeight: 1,
                 },
                 image: {
-                  "xlink:href": "../../src/assets/complextypexml.svg",
+                  "xlink:href": data.data.icon,
                   width: 20,
                   height: 20,
                   x: 12,
@@ -120,7 +122,7 @@ function renderGraph(code) {
                     refHeight: 1,
                   },
                   image: {
-                    "xlink:href": "./src/assets/" + data.data.type + ".svg",
+                    "xlink:href": data.data.icon,
                     width: 20,
                     height: 20,
                     x: 12,
@@ -426,12 +428,12 @@ watch(
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a v-on:click="downloadSVGAsText()">
-                  <img src="../../assets/svg.svg" style="width: 25px; height: 25px" alt="Download diagram as svg" />
+                  <img :src="svg" style="width: 25px; height: 25px" alt="Download diagram as svg" />
                 </a>
               </li>
               <li class="nav-item">
                 <a v-on:click="downloadSVGAsPNG()">
-                  <img src="../../assets/png.svg" style="width: 25px; height: 25px" alt="Download diagram as png" />
+                  <img :src="png" style="width: 25px; height: 25px" alt="Download diagram as png" />
                 </a>
               </li>
             </ul>

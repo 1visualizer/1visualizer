@@ -1,5 +1,10 @@
 import { HierarchyResult } from "../../entities/HierarchyResult";
 import { XMLValidator } from "fast-xml-parser";
+import sequencetype from "../../assets/sequence.svg";
+import stringtype from "../../assets/stringtype.svg";
+import numbertype from "../../assets/numbertype.svg";
+import datetype from "../../assets/date.svg";
+import complextype from "../../assets/complextypexml.svg";
 
 import * as _ from "lodash";
 
@@ -15,7 +20,7 @@ export function parseRoot(root: Element): HierarchyResult {
   let result = {} as HierarchyResult;
   result.id = _.uniqueId("elem");
   result.name = root.getAttribute("name") ?? root.nodeName;
-  result.type = getTypeByElement(root);
+  result.icon = getIconByElement(root);
   result.children = [];
   if (root.hasChildNodes()) {
     for (let i = 0; i < root.children.length; i++) {
@@ -48,7 +53,7 @@ function simpleContentParser(parent: HierarchyResult, element: Element) {
       const item = element.children[i];
       if (item.nodeName.includes("extension")) {
         const baseAttr = item.getAttribute("base");
-        if (baseAttr != null) parent.type = getTypeByAttribute(baseAttr);
+        if (baseAttr != null) parent.icon = getIconByAttribute(baseAttr);
       }
     }
   }
@@ -57,11 +62,11 @@ function simpleContentParser(parent: HierarchyResult, element: Element) {
 function sequenceParser(parent: HierarchyResult, sequence: Element) {
   let sequenceResult = {} as HierarchyResult;
   sequenceResult.id = _.uniqueId("seq");
-  sequenceResult.icon = "/src/assets/sequence4.svg";
+  sequenceResult.icon = sequencetype;
   sequenceResult.minOccurs = sequence.getAttribute("minOccurs") ?? "1";
   sequenceResult.maxOccurs = sequence.getAttribute("maxOccurs") == "unbounded" ? "*" : sequence.getAttribute("maxOccurs") ?? "1";
-  sequenceResult.type = "sequence";
   sequenceResult.children = [];
+  sequenceResult.type = "sequence";
   parent.children.push(sequenceResult);
 
   if (sequence.hasChildNodes()) {
@@ -80,7 +85,7 @@ function elementParser(parent: HierarchyResult, element: Element) {
   let elementResult = {} as HierarchyResult;
   elementResult.id = _.uniqueId("elem");
   elementResult.name = element.getAttribute("name") ?? element.nodeName;
-  elementResult.type = getTypeByElement(element);
+  elementResult.icon = getIconByElement(element);
   elementResult.minOccurs = element.getAttribute("minOccurs") ?? "1";
   elementResult.maxOccurs = element.getAttribute("maxOccurs") == "unbounded" ? "*" : element.getAttribute("maxOccurs") ?? "1";
   elementResult.children = [];
@@ -96,27 +101,26 @@ function elementParser(parent: HierarchyResult, element: Element) {
   }
 }
 
-function getTypeByElement(element: Element): string {
+function getIconByElement(element: Element): string {
   const type = element.getAttribute("type") as string;
-  return getTypeByAttribute(type);
+  return getIconByAttribute(type);
 }
 
-function getTypeByAttribute(type: string): string {
+function getIconByAttribute(type: string): string {
   if (type?.includes("string")) {
-    return "string-5";
+    return stringtype;
   } else if (type?.includes("integer") || type?.includes("decimal") || type?.includes("unsigned") || type?.includes("long")) {
-    return "number-16";
+    return numbertype;
   } else if (type?.includes("boolean")) {
-    return "boolean";
+    return stringtype;
   } else if (type?.includes("date")) {
-    return "date";
+    return datetype;
   } else if (type?.includes("time")) {
-    return "time";
+    return datetype;
   } else {
-    return "complextypexml";
+    return complextype;
   }
 }
-
 
 export function validateXml(document: string) {
   const result = XMLValidator.validate(document, {
