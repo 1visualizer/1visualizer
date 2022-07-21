@@ -36,10 +36,8 @@
   <p align="center">
     A tool that allows you to visualize Xml, Xsd, Json, Yaml documents as diagram
     <br />
-    <a href="https://github.com/1visualizer/1visualizer"><strong>Explore the docs »</strong></a>
     <br />
-    <br />
-    <a href="https://github.com/1visualizer/1visualizer">View Demo</a>
+    <a href="https://1visualizer.app/">Visit Website</a>
     ·
     <a href="https://github.com/1visualizer/1visualizer/issues">Report Bug</a>
     ·
@@ -52,7 +50,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-TODO
+https://1visualizer.app
+
+
 
 
 
