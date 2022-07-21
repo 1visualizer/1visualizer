@@ -428,20 +428,18 @@ watch(
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a v-on:click="downloadSVGAsText()">
-                  <img :src="svg" style="width: 25px; height: 25px" alt="Download diagram as svg" />
+                  <img :src="svg" alt="Download diagram as svg" />
                 </a>
               </li>
               <li class="nav-item">
                 <a v-on:click="downloadSVGAsPNG()">
-                  <img :src="png" style="width: 25px; height: 25px" alt="Download diagram as png" />
+                  <img :src="png" alt="Download diagram as png" />
                 </a>
               </li>
             </ul>
           </div>
         </div>
       </nav>
-    </div>
-    <div class="row">
       <div id="container"></div>
     </div>
   </div>
@@ -458,6 +456,14 @@ watch(
 #navbarNavDropdown li {
   padding-right: 20%;
 }
-</style>
 
-<style></style>
+.navbar {
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+}
+
+.nav-item img {
+  width: 2.1em;
+  height: 2.1em;
+}
+</style>

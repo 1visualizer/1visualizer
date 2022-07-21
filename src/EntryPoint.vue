@@ -3,7 +3,6 @@ import { ref, computed } from "vue";
 import App from "./components/app/App.vue";
 import Changelog from "./components/changelog/Changelog.vue";
 import TopNavBar from "./components/common/TopNavBar.vue";
-import SvgElements from "./components/utils/SvgElements.vue";
 
 const routes = {
   "/": App,

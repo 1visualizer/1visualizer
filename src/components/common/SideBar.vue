@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Graph } from "@antv/x6";
 import { watch } from "vue";
+import codesvg from "../../assets/code.svg";
+import diagramsvg from "../../assets/diagram.svg";
 
 const props = defineProps({
   date: Number,
@@ -35,7 +36,7 @@ watch(
           href="#"
         >
           <svg class="bi" width="24" height="24" role="img" aria-label="Code">
-            <use xlink:href="#code" />
+            <use :href="`${codesvg}#code`" />
           </svg>
           Code
         </a>
@@ -53,7 +54,7 @@ watch(
           href="#"
         >
           <svg class="bi" width="24" height="24" role="img" aria-label="Diagram">
-            <use xlink:href="#diagram" />
+            <use :href="`${diagramsvg}#diagram`" />
           </svg>
           Design
         </a>

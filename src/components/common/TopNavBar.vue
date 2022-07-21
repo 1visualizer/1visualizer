@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import logo from "../../assets/1visualizer-logo.svg";
 
 const isRoot = ref(false);
 const isChangelog = ref(false);
@@ -26,8 +27,8 @@ function activeState() {
   <nav class="navbar navbar-expand-md navbar-dark sticky-top bg-primary">
     <div class="container-fluid">
       <a href="/" class="navbar-brand" title="Icon-only" data-bs-toggle="tooltip" data-bs-placement="right">
-        <svg class="bi" width="40" height="32">
-          <use xlink:href="#bootstrap" />
+        <svg class="bi" width="50" height="47" xmlns="http://www.w3.org/2000/svg">
+          <use :href="`${logo}#bootstrap`" />
         </svg>
         <span class="visually-hidden">Icon-only</span>
       </a>
@@ -53,5 +54,9 @@ function activeState() {
   vertical-align: -0.125em;
   pointer-events: none;
   fill: currentColor;
+}
+.navbar {
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
 }
 </style>
