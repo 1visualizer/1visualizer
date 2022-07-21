@@ -31,7 +31,7 @@
     <img src="public/1visualizer-logo-blue.svg" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">1Visualizer</h3>
 
   <p align="center">
     A tool that allows you to visualize Xml, Xsd, Json, Yaml documents as diagram
