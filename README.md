@@ -28,13 +28,13 @@
 <br />
 <div align="center">
   <a href="https://github.com/1visualizer/1visualizer">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="public/1visualizer-logo-blue.svg" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Best-README-Template</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    A tool that allows you to visualize Xml, Xsd, Json, Yaml documents as diagram
     <br />
     <a href="https://github.com/1visualizer/1visualizer"><strong>Explore the docs »</strong></a>
     <br />
