@@ -27,8 +27,8 @@ jobs:
           from_file: '.env.production'
           to_file: '.env.production'
           commit: 'false'
-      - name: Test output
-        run: cat /home/runner/work/1visualizer/1visualizer/.env.production
+      - name: cp CHANGELOG.md
+        run: cp  /home/runner/work/1visualizer/1visualizer/CHANGELOG.md /home/runner/work/1visualizer/1visualizer/src/assets
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
