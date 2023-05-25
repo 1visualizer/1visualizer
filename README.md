@@ -81,7 +81,25 @@ See the [open issues](https://github.com/1visualizer/1visualizer/issues) for a f
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
+<!-- INSTRUCTIONS -->
+## Instructions
 
+To run the 1Visualizer project locally, follow these steps:
+
+### Prerequisites
+
+- Node.js: Version 14 or above
+- Yarn
+
+### Installation
+
+1. ```bash
+   yarn install
+2. ```bash
+   yarn dev
+   
+   
+   
 <!-- LICENSE -->
 ## License
 
